@@ -22,7 +22,7 @@
     <form class="row g-3 m-4">
         <div class="col-md-12">
             <label for="inputTabName" class="form-label" required>Tab Name</label>
-            <input type="email" class="form-control" id="inputEmail4">
+            <input type="tezt" class="form-control" id="inputTabName">
         </div>
         <div class="col-md-12">
             <label for="inputTabIconURL" class="form-label" required>Icon URL</label>
@@ -30,7 +30,7 @@
         </div>
         <div class="col-12">
             <label for="inputDescription" class="form-label">Description</label>
-            <input type="text" class="form-control" id="inputAddress" placeholder="Enter Description">
+            <input type="text" class="form-control" id="inputDescription" placeholder="Enter Description">
         </div>
         <div class="col-md-12">
             <label for="inputTabImageURL" class="form-label">Image URL</label>
@@ -56,7 +56,7 @@
 
 
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Sign in</button>
+            <button type="submit" id="subminBtn" class="btn btn-success">Submit</button>
         </div>
     </form>
 </body>
@@ -68,7 +68,7 @@
     amenitiesSelect.addEventListener("change", () => {
         const counts = parseInt(amenitiesSelect.value);
         // console.log(counts);
-        
+
 
         inputsContainer.innerHTML = "";
 
@@ -85,10 +85,57 @@
         <input type="text" class="form-control mb-4" name="amenityImage${i}" placeholder="Image URL">
 
             `;
-            
+
             inputsContainer.appendChild(colDiv);
         }
     })
+
+    document.querySelector("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const tabName = document.getElementById("inputTabName").value;
+        const iconURL = document.getElementById("inputTabIconURL").value;
+        const description = document.getElementById("inputDescription").value;
+        const imageURL = document.getElementById("inputTabImageURL").value;
+        const amenityCount = parseInt(document.getElementById("AmenitiesSelection").value);
+
+        const amenities = [];
+
+        for (let i = 1; i <= amenityCount; i++) {
+            const name = document.querySelector(`input[name="amenityName${i}"]`).value;
+            const image = document.querySelector(`input[name="amenityImage${i}"]`).value;
+
+            amenities.push({ name, image });
+        }
+
+        const newTabData = {
+            name:tabName,
+            icon: iconURL,
+            image: imageURL,
+            description,
+            amenities: amenities
+        }
+        console.log(newTabData);
+        
+
+        try {
+            const res = await fetch("http://localhost:6006/api/add-tab", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newTabData)
+            })
+
+            const result = await res.json();
+            alert("Tab added Successfully")
+
+        } catch (error) {
+            console.error("Error adding tab: ", error);
+            alert("Failed to add tab. Please check your server.");
+        }
+
+    });
 
 </script>
 
