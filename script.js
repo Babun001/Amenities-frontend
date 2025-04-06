@@ -54,7 +54,7 @@
 // -------------------------------------------------------------------dynamic--------------------------------------
 
 document.addEventListener("DOMContentLoaded", async() => {
-    await fetch("https://amenities-backend-production.up.railway.app/tabsdata")
+    await fetch("https://amenities-backend-production.up.railway.app/api/tabsData")
         .then(res => res.json())
         // .then(data => console.log(data.Panorama.image))
         .then(data =>{

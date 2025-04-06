@@ -170,7 +170,7 @@ document.getElementById("deleteTabForm").addEventListener("submit", async (e) =>
 });
 
 
-document.getElementById("logout").addEventListener("click",() =>{
+document.getElementById("logout").addEventListener("click", () => {
     // alert("clicled on logout btn")
     localStorage.removeItem("authToken");//// will remove the authtoken from localstoreage
     alert("You have been logged out.");
