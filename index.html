@@ -12,6 +12,25 @@
     <script type="module" src="script.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Babun's Assignment</title>
+    <style>
+        .addNewTabs{
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            /* background-color: red; */
+        }
+        #adminpanelbtn{
+            background-color:bisque;
+            border: 1px solid black;
+            border-radius: 15px;
+            padding: 10px;
+            font-weight: 500;
+        }
+        #adminpanelbtn:hover{
+            background-color:rgb(253, 233, 208);
+            box-shadow: 0 2px 1px rgba(0, 0, 0, 0.7);
+        }
+    </style>
 
 </head>
 
@@ -20,6 +39,11 @@
         <div class="headLine d-flex justify-content-center">
             <h1>3 Tier Amenities & Facilities</h1>
         </div>
+
+        <div class="addNewTabs">
+            <button id="adminpanelbtn" onclick="window.location.href='login.html'">Admin Panel</button>
+        </div>
+
         <ul class="nav nav-tabs" id="tabMenu">
             <!-- <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#patio"><img style="width: 7rem;"
@@ -75,9 +99,7 @@
             </div> -->
         </div>
 
-        <div class="addNewTabs">
-            <button onclick="window.location.href='addNewtab.html'">Add New Tabs</button>
-        </div>
+        
 
     </div>
 

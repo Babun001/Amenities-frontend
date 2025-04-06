@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script type="module" src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Add New Tabs</title>
+</head>
+
+<body>
+    <div class="container d-flex justify-content-center mb-2 mt-3">
+        <h1>Welcome to Admin Panel</h1>
+    </div>
+
+    <form class="row g-3 m-4">
+        <div class="col-md-12">
+            <label for="inputTabName" class="form-label" required>Tab Name</label>
+            <input type="tezt" class="form-control" id="inputTabName">
+        </div>
+        <div class="col-md-12">
+            <label for="inputTabIconURL" class="form-label" required>Icon URL</label>
+            <input type="text" class="form-control" id="inputTabIconURL">
+        </div>
+        <div class="col-12">
+            <label for="inputDescription" class="form-label">Description</label>
+            <input type="text" class="form-control" id="inputDescription" placeholder="Enter Description">
+        </div>
+        <div class="col-md-12">
+            <label for="inputTabImageURL" class="form-label">Image URL</label>
+            <input type="text" class="form-control" id="inputTabImageURL">
+        </div>
+        <div class="col-md-12">
+            <label for="AmenitiesCount">Select Amenities Number</label>
+            <select name="Amenities" id="AmenitiesSelection">
+                <option selected>Choose</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+            </select>
+        </div>
+
+
+        <div class="row mt-3" id="amenitiesInputsContainer"></div>
+
+
+        <div class="col-12">
+            <button type="submit" id="subminBtn" class="btn btn-success">Submit</button>
+        </div>
+
+        <button onclick="logout()" class="btn btn-danger">Logout</button>
+    </form>
+</body>
+<script>
+    const token = localStorage.getItem("authToken");
+
+    if (!token || !token.startsWith("BabunRoy")) {
+        // Not authorized
+        window.location.href = "login.html";
+    }
+
+    const amenitiesSelect = document.getElementById("AmenitiesSelection");
+    const inputsContainer = document.getElementById("amenitiesInputsContainer");
+
+    amenitiesSelect.addEventListener("change", () => {
+        const counts = parseInt(amenitiesSelect.value);
+        // console.log(counts);
+
+
+        inputsContainer.innerHTML = "";
+
+        for (let i = 1; i <= counts; i++) {
+            const colDiv = document.createElement("div");
+            // console.log(i);
+            colDiv.className = "col-md-6 mb-3";
+            colDiv.innerHTML = `
+            
+            <label>Amenity ${i} Name</label>
+        <input type="text" class="form-control mb-2" name="amenityName${i}" placeholder="Amenity Name">
+            
+            <label>Amenity ${i} Icon URL</label>
+        <input type="text" class="form-control mb-4" name="amenityImage${i}" placeholder="Image URL">
+
+            `;
+
+            inputsContainer.appendChild(colDiv);
+        }
+    })
+
+    document.querySelector("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const tabName = document.getElementById("inputTabName").value;
+        const iconURL = document.getElementById("inputTabIconURL").value;
+        const description = document.getElementById("inputDescription").value;
+        const imageURL = document.getElementById("inputTabImageURL").value;
+        const amenityCount = parseInt(document.getElementById("AmenitiesSelection").value);
+
+        const amenities = [];
+
+        for (let i = 1; i <= amenityCount; i++) {
+            const name = document.querySelector(`input[name="amenityName${i}"]`).value;
+            const image = document.querySelector(`input[name="amenityImage${i}"]`).value;
+
+            amenities.push({ name, image });
+        }
+
+        const newTabData = {
+            name: tabName,
+            icon: iconURL,
+            image: imageURL,
+            description,
+            amenities: amenities
+        }
+        // console.log(newTabData);
+
+
+        try {
+            const res = await fetch("http://localhost:6006/api/add-tab", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `BabunRoy ${token}`
+                },
+                body: JSON.stringify(newTabData)
+            })
+
+            const result = await res.json();
+
+            if (res.status == 200) {
+                alert("Tab added Successfully");
+                window.location.href='index.html';
+            } else {
+                alert(result.message || "Failed to add tab.")
+            }
+
+        } catch (error) {
+            console.error("Error adding tab: ", error);
+            alert("Failed to add tab. Please check your server.");
+        }
+
+    });
+
+    function logout() {
+    localStorage.removeItem("authToken");
+    window.location.href = "index.html";
+  }
+
+</script>
+
+</html>

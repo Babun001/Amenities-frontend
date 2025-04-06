@@ -53,8 +53,8 @@
 
 // -------------------------------------------------------------------dynamic--------------------------------------
 
-document.addEventListener("DOMContentLoaded", () => {
-    fetch("http://localhost:6006/api/tabsdata")
+document.addEventListener("DOMContentLoaded", async() => {
+    await fetch("http://localhost:6006/api/tabsdata")
         .then(res => res.json())
         // .then(data => console.log(data.Panorama.image))
         .then(data =>{
