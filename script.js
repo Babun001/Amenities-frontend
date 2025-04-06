@@ -54,7 +54,7 @@
 // -------------------------------------------------------------------dynamic--------------------------------------
 
 document.addEventListener("DOMContentLoaded", async() => {
-    await fetch("http://localhost:6006/api/tabsdata")
+    await fetch("https://amenities-backend.onrender.com/tabsdata")
         .then(res => res.json())
         // .then(data => console.log(data.Panorama.image))
         .then(data =>{
