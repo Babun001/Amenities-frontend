@@ -65,7 +65,7 @@ document.getElementById("addTabForm").addEventListener("submit", async (e) => {
     };
 
     try {
-        const res = await fetch("https://amenities-backend.onrender.com/api/add-tab", {
+        const res = await fetch("amenities-backend-production.up.railway.app/api/add-tab", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -94,7 +94,7 @@ const selectedTabs = new Set();
 
 async function loadTabs() {
     try {
-        const res = await fetch("https://amenities-backend.onrender.com/api/tabsData");
+        const res = await fetch("amenities-backend-production.up.railway.app/api/tabsData");
         const data = await res.json();
 
         const tabButtonsContainer = document.getElementById("tabButtons");
@@ -144,7 +144,7 @@ document.getElementById("deleteTabForm").addEventListener("submit", async (e) =>
     const token = localStorage.getItem("authToken"); // adjust this line if you store the token differently
 
     try {
-        const res = await fetch("https://amenities-backend.onrender.com/api/delete-tabs", {
+        const res = await fetch("amenities-backend-production.up.railway.app/api/delete-tabs", {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
